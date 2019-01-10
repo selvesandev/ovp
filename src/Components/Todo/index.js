@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TList, AppInput} from './../../Components/Common';
+import {AppInput, TList} from './../../Components/Common';
 
 class Todo extends Component {
 	state = {
@@ -11,12 +11,12 @@ class Todo extends Component {
 		super(props);
 		this.onInputChange = this.onInputChange.bind(this);
 		this.onSubmitNote = this.onSubmitNote.bind(this);
+		this.removeItem = this.removeItem.bind(this);
 	}
 
 	onInputChange(e) {
 		this.setState({todoInputValue: e.target.value});
 	}
-
 
 	onSubmitNote(e) {
 		e.preventDefault();
@@ -26,6 +26,27 @@ class Todo extends Component {
 
 		todoListItems.push({id: todoListItems.length + 1, value: todoInputValue});
 		this.setState({todoInputValue: ''});
+		this.props.onTodoUpdated(this.state.todoListItems)
+	}
+
+	renderListItemsJSX() {
+		const {todoListItems} = this.state;
+
+		if (todoListItems.length < 1) return <h3>No todo list created yet...</h3>;
+
+		return todoListItems.map((todoItem, i) => {
+			return <TList onDelete={this.removeItem} key={i} todoItem={todoItem}/>
+		})
+	}
+
+
+	removeItem(index) {
+
+		const {todoListItems} = this.state;
+		if (todoListItems[index - 1] === undefined) return false;
+
+		todoListItems.splice(index - 1, 1);
+		this.setState({todoListItems});
 	}
 
 
@@ -33,21 +54,18 @@ class Todo extends Component {
 		return (<div className={'todo-container'}>
 			<div className="input-container">
 				<form onSubmit={this.onSubmitNote}>
-					<input value={this.state.todoInputValue} onChange={this.onInputChange} autoFocus
-						   type="text" className={'to-do-input'}
-						   placeholder={'Enter your note here..'}/>
+					<AppInput placeholder={'Enter your note here..'} onInputChangeProps={this.onInputChange}
+							  inputValue={this.state.todoInputValue}/>
 				</form>
 			</div>
 
 			<div className="todo-list-container">
-				<TList/>
-				<TList/>
-				<TList/>
-				<TList/>
+				{this.renderListItemsJSX()}
 			</div>
 
-			<button className={'load-more-button'}>View More.</button>
-			<AppInput/>
+			{this.state.todoListItems.length > 3 && <button className={'load-more-button'}>View More.</button>}
+
+
 		</div>);
 	}
 }
