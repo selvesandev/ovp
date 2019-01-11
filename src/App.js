@@ -31,7 +31,6 @@ class App extends Component {
 					<Route path={'/todo/:id([0-9]*)'} exact
 						   render={() => (<TodoSingle todoItems={this.state.todoItems}/>)}/>
 					<Route component={NotFound}/>
-
 					{/*<Route path={'/'} exact*/}
 					{/*render={(props) => (<Todo {...props} onTodoUpdated={this.onTodoUpdated}/>)}/>*/}
 					{/*<Route path={'/todo'} exact*/}
