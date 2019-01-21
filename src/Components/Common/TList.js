@@ -5,9 +5,9 @@ import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
 const TList = ({todoItem, onDelete}) => {
-	const {id, value} = todoItem;
+	const {id, todo} = todoItem;
 	return (<div className="list-item">
-		<Link to={'/todo/' + id}>{value}</Link>
+		<Link to={'/todo/' + id}>{todo}</Link>
 		<div className="remove"><a href="" onClick={(e) => {
 			e.preventDefault();
 			confirmAlert({

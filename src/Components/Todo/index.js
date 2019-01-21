@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import {AppInput, TList} from './../../Components/Common';
+import {connect} from "react-redux";
+import {todoInputChange, fetchAllTodoList, submitTodo} from '../../store/actions'
+
 
 class Todo extends Component {
 	state = {
@@ -14,9 +17,6 @@ class Todo extends Component {
 		this.removeItem = this.removeItem.bind(this);
 	}
 
-	onInputChange(e) {
-		this.setState({todoInputValue: e.target.value});
-	}
 
 	onSubmitNote(e) {
 		e.preventDefault();
@@ -30,7 +30,7 @@ class Todo extends Component {
 	}
 
 	renderListItemsJSX() {
-		const {todoListItems} = this.state;
+		const todoListItems = this.props.list;
 
 		if (todoListItems.length < 1) return <h3>No todo list created yet...</h3>;
 
@@ -49,13 +49,26 @@ class Todo extends Component {
 		this.setState({todoListItems});
 	}
 
+	onInputChange(e) {
+		this.setState({todoInputValue: e.target.value});
+	}
+
+	componentDidMount() {
+		this.props.fetchAllTodoList();
+	}
 
 	render() {
 		return (<div className={'todo-container'}>
 			<div className="input-container">
-				<form onSubmit={this.onSubmitNote}>
-					<AppInput placeholder={'Enter your note here..'} onInputChangeProps={this.onInputChange}
-							  inputValue={this.state.todoInputValue}/>
+				<form onSubmit={(e) => {
+					e.preventDefault();
+					this.props.submitTodo()
+				}}>
+					<AppInput placeholder={'Enter your note here..'}
+							  onInputChangeProps={(e) => {
+								  this.props.todoInputChange({prop: 'todoInputValue', value: e.target.value});
+							  }}
+							  inputValue={this.props.inputValue}/>
 				</form>
 			</div>
 
@@ -70,4 +83,12 @@ class Todo extends Component {
 	}
 }
 
-export default Todo;
+const mapStateToProps = state => {
+	return {
+		inputValue: state.todoInputValue,
+		list: state.todoListItems
+	}
+};
+
+
+export default connect(mapStateToProps, {todoInputChange, fetchAllTodoList, submitTodo})(Todo);
