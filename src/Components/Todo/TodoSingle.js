@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import _ from 'lodash';
-import {NotFound} from "../Error/NotFound";
+import {fetchSingleTodoList} from './../../store/actions';
+import {connect} from "react-redux";
 
 class TodoSingle extends Component {
 	selectedTodoItems() {
@@ -15,14 +16,22 @@ class TodoSingle extends Component {
 		return null;
 	}
 
-	render() {
-		const selectedTodoItems = this.selectedTodoItems();
+	componentDidMount() {
+		const {match} = this.props;
+		this.props.fetchSingleTodoList(match.params.id);
+	}
 
-		if (selectedTodoItems)
-			return <div className={'todo-container'}><h1>{selectedTodoItems.value}</h1></div>
-		else
-			return <NotFound {...this.props}/>
+
+	render() {
+		return <div className={'todo-container'}><h1>{this.props.selected.todo}</h1></div>
 	}
 }
 
-export default withRouter(TodoSingle);
+
+const mapStateToProps = state => {
+	return {
+		selected: state.selected
+	}
+};
+
+export default connect(mapStateToProps, {fetchSingleTodoList})(withRouter(TodoSingle));

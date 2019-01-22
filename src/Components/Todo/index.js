@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {AppInput, TList} from './../../Components/Common';
 import {connect} from "react-redux";
 import {todoInputChange, fetchAllTodoList, submitTodo} from '../../store/actions'
-
+import Loader from 'react-loader';
 
 class Todo extends Component {
 	state = {
@@ -12,27 +12,14 @@ class Todo extends Component {
 
 	constructor(props) {
 		super(props);
-		this.onInputChange = this.onInputChange.bind(this);
-		this.onSubmitNote = this.onSubmitNote.bind(this);
 		this.removeItem = this.removeItem.bind(this);
 	}
 
 
-	onSubmitNote(e) {
-		e.preventDefault();
-		let {todoInputValue, todoListItems} = this.state;
-
-		if (todoInputValue.length < 5) return;
-
-		todoListItems.push({id: todoListItems.length + 1, value: todoInputValue});
-		this.setState({todoInputValue: ''});
-		this.props.onTodoUpdated(this.state.todoListItems)
-	}
-
 	renderListItemsJSX() {
 		const todoListItems = this.props.list;
 
-		if (todoListItems.length < 1) return <h3>No todo list created yet...</h3>;
+		if (todoListItems.length < 1 && this.props.loaded === true) return <h3>No todo list created yet...</h3>;
 
 		return todoListItems.map((todoItem, i) => {
 			return <TList onDelete={this.removeItem} key={i} todoItem={todoItem}/>
@@ -47,10 +34,6 @@ class Todo extends Component {
 
 		todoListItems.splice(index - 1, 1);
 		this.setState({todoListItems});
-	}
-
-	onInputChange(e) {
-		this.setState({todoInputValue: e.target.value});
 	}
 
 	componentDidMount() {
@@ -74,6 +57,8 @@ class Todo extends Component {
 
 			<div className="todo-list-container">
 				{this.renderListItemsJSX()}
+
+				<Loader loaded={this.props.loaded}></Loader>
 			</div>
 
 			{this.state.todoListItems.length > 3 && <button className={'load-more-button'}>View More.</button>}
@@ -86,7 +71,8 @@ class Todo extends Component {
 const mapStateToProps = state => {
 	return {
 		inputValue: state.todoInputValue,
-		list: state.todoListItems
+		list: state.todoListItems,
+		loaded: state.loaded
 	}
 };
 

@@ -3,7 +3,8 @@ import * as ActionTypes from './../ActionTypes';
 const initialState = {
 	todoInputValue: '',
 	todoListItems: [],
-
+	loaded: false,
+	selected: {}
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +16,16 @@ export default (state = initialState, action) => {
 			};
 		case ActionTypes.TODO_FETCH_ALL:
 			state.todoListItems = action.payload;
+			return {
+				...state
+			};
+		case ActionTypes.TODO_LOADER:
+			state.loaded = action.payload;
+			return {
+				...state
+			};
+		case ActionTypes.TODO_FETCH_SINGLE:
+			state.selected = action.payload;
 			return {
 				...state
 			};

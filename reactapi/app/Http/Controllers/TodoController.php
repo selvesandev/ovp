@@ -22,9 +22,18 @@ class TodoController extends Controller
 		return response()->json(['status' => false, 'msg' => 'invalid']);
 	}
 
+
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function index(Request $request)
 	{
-		$todo = Todo::orderBy('id', 'desc')->get();
-		return response()->json(['status' => true, 'todo' => TodoResource::collection($todo)]);
+		$id = (int)$request->id;
+		if ($id)
+			$todo = new TodoResource(Todo::where('id', $id)->first());
+		else
+			$todo = TodoResource::collection(Todo::orderBy('id', 'desc')->get());
+		return response()->json(['status' => true, 'todo' => $todo]);
 	}
 }

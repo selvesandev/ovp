@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 
 class NotFound extends Component {
 	render() {
-		console.log(this.props);
 		const {pathname} = this.props.location;
 		return <div className={'not-found'}>
 			<h1>NOT FOUND</h1>

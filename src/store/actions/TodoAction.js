@@ -12,10 +12,12 @@ export const todoInputChange = ({prop, value}) => {
 
 export const fetchAllTodoList = () => {
 	return (dispatch) => {
+		dispatch({type: ActionTypes.TODO_LOADER, payload: false});
 		sendPost('/todo').then(res => {
 			if (res.data.status === true) {
 				dispatch({type: ActionTypes.TODO_FETCH_ALL, payload: res.data.todo})
 			}
+			dispatch({type: ActionTypes.TODO_LOADER, payload: true});
 		}).catch(err => {
 			// console.log(err);
 		})
@@ -36,4 +38,19 @@ export const submitTodo = () => {
 		})
 	}
 };
+
+
+export const fetchSingleTodoList = (id) => {
+	return (dispatch) => {
+		dispatch({type: ActionTypes.TODO_FETCH_SINGLE, payload: {}});
+		sendPost('/todo', {id}).then(res => {
+			if (res.data.status === true) {
+				dispatch({type: ActionTypes.TODO_FETCH_SINGLE, payload: res.data.todo});
+			}
+		}).catch(err => {
+			// console.log(err);
+		})
+	}
+}
+
 
