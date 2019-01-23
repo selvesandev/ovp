@@ -1,20 +1,10 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
-import _ from 'lodash';
-import {fetchSingleTodoList} from './../../store/actions';
+import {fetchSingleTodoList, todoInputChange, saveDetails} from './../../store/actions';
 import {connect} from "react-redux";
+import {TodoDetails} from "../Common";
 
 class TodoSingle extends Component {
-	selectedTodoItems() {
-		const {todoItems, match} = this.props;
-		if (!todoItems || !match.params.id) return null;
-
-		const selectedTodoItems = _.filter(todoItems, ['id', parseInt(match.params.id)]);
-
-		if (selectedTodoItems.length > 0) return selectedTodoItems[0];
-
-		return null;
-	}
 
 	componentDidMount() {
 		const {match} = this.props;
@@ -23,15 +13,28 @@ class TodoSingle extends Component {
 
 
 	render() {
-		return <div className={'todo-container'}><h1>{this.props.selected.todo}</h1></div>
+		if (Object.keys(this.props.selected).length > 0)
+			return <div className={'todo-container'}>
+				<h1>{this.props.selected.todo}</h1>
+
+
+				<TodoDetails submit={this.props.saveDetails}
+							 value={this.props.inputValue}
+							 inputChange={this.props.todoInputChange}
+							 selected={this.props.selected}/>
+
+			</div>;
+		else
+			return null;
 	}
 }
 
 
 const mapStateToProps = state => {
 	return {
-		selected: state.selected
+		selected: state.selected,
+		inputValue: state.todoDetailValue
 	}
 };
 
-export default connect(mapStateToProps, {fetchSingleTodoList})(withRouter(TodoSingle));
+export default connect(mapStateToProps, {fetchSingleTodoList, todoInputChange, saveDetails})(withRouter(TodoSingle));

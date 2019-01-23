@@ -3,6 +3,40 @@
   background-color: #efefef;
   padding: 20px;
   margin: auto;
+  h1 {
+	color: #555;
+	width: 70%;
+	font-size: 45px;
+  }
+  .details-container {
+	small {
+	  color: #777;
+	  span {
+		background-color: #3f9ae5;
+		color: white;
+		padding: 1px 5px;
+		border-radius: 5px;
+	  }
+	}
+	p {
+	  color: #777;
+	  line-height: 25px;
+	  width: 80%;
+	}
+	.detail-box {
+	  margin-top: 5px;
+	  width: 90%;
+	  resize: none;
+	  padding: 10px;
+	  min-height: 100px;
+	  color: #666;
+	  border: 1px solid #999;
+	  font-size: 18px;
+	  &:focus {
+		outline: none;
+	  }
+	}
+  }
   .to-do-input {
 	height: 40px;
 	font-size: 20px;

@@ -51,6 +51,21 @@ export const fetchSingleTodoList = (id) => {
 			// console.log(err);
 		})
 	}
+};
+
+export const saveDetails = () => {
+	return (dispatch, getState) => {
+		const {todoDetailValue, selected} = getState();
+
+		if (todoDetailValue.length < 10) return false;
+
+		sendPost('/todo/detail', {detail: todoDetailValue, id: selected.id}).then(res => {
+			if (res.data.status === true) {
+				dispatch(todoInputChange({prop: 'todoDetailValue', value: ''}));
+				dispatch(fetchSingleTodoList(selected.id));
+			}
+		})
+	}
 }
 
 

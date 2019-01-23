@@ -30,10 +30,30 @@ class TodoController extends Controller
 	public function index(Request $request)
 	{
 		$id = (int)$request->id;
-		if ($id)
+		if ($id) {
+			$request->request->add(['is_single' => true]);
 			$todo = new TodoResource(Todo::where('id', $id)->first());
-		else
+		} else
 			$todo = TodoResource::collection(Todo::orderBy('id', 'desc')->get());
 		return response()->json(['status' => true, 'todo' => $todo]);
+	}
+
+
+	public function updateDetails(Request $request)
+	{
+		$this->validate($request, [
+			'detail' => 'required',
+			'id' => 'required|numeric'
+		]);
+
+
+		$todoID = (int)$request->id;
+		$details = $request->detail;
+
+		$todo = Todo::find($todoID);
+		$todo->details = $details;
+
+		$todo->save();
+		return response()->json(['status' => true]);
 	}
 }

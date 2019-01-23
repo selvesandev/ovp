@@ -2,6 +2,7 @@ import * as ActionTypes from './../ActionTypes';
 
 const initialState = {
 	todoInputValue: '',
+	todoDetailValue: '',
 	todoListItems: [],
 	loaded: false,
 	selected: {}

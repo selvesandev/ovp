@@ -14,9 +14,16 @@ class TodoResource extends JsonResource
 	 */
 	public function toArray($request)
 	{
-		return [
+
+		$data = [
 			'id' => $this->id,
-			'todo' => $this->title
+			'todo' => $this->title,
 		];
+
+		if ($request->is_single === true) {
+			$data['detail'] = $this->details;
+		}
+
+		return $data;
 	}
 }
