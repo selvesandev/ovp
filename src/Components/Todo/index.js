@@ -17,9 +17,9 @@ class Todo extends Component {
 
 
 	renderListItemsJSX() {
-		const todoListItems = this.props.list;
+		const {todoListItems, loaded} = this.props.todo;
 
-		if (todoListItems.length < 1 && this.props.loaded === true) return <h3>No todo list created yet...</h3>;
+		if (todoListItems.length < 1 && loaded === true) return <h3>No todo list created yet...</h3>;
 
 		return todoListItems.map((todoItem, i) => {
 			return <TList onDelete={this.removeItem} key={i} todoItem={todoItem}/>
@@ -41,6 +41,8 @@ class Todo extends Component {
 	}
 
 	render() {
+		const {todoInputValue, loaded} = this.props.todo;
+
 		return (<div className={'todo-container'}>
 			<div className="input-container">
 				<form onSubmit={(e) => {
@@ -51,14 +53,14 @@ class Todo extends Component {
 							  onInputChangeProps={(e) => {
 								  this.props.todoInputChange({prop: 'todoInputValue', value: e.target.value});
 							  }}
-							  inputValue={this.props.inputValue}/>
+							  inputValue={todoInputValue}/>
 				</form>
 			</div>
 
 			<div className="todo-list-container">
 				{this.renderListItemsJSX()}
 
-				<Loader loaded={this.props.loaded}></Loader>
+				<Loader loaded={loaded}></Loader>
 			</div>
 
 			{this.state.todoListItems.length > 3 && <button className={'load-more-button'}>View More.</button>}
@@ -70,9 +72,8 @@ class Todo extends Component {
 
 const mapStateToProps = state => {
 	return {
-		inputValue: state.todoInputValue,
-		list: state.todoListItems,
-		loaded: state.loaded
+		todo: state.todo
+
 	}
 };
 

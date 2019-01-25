@@ -3,3 +3,5 @@ export const TODO_FETCH_ALL = 'TODO_FETCH_ALL';
 export const TODO_FETCH_SINGLE = 'TODO_FETCH_SINGLE';
 export const TODO_LOADER = 'TODO_LOADER';
 
+
+export const USER_INPUT_CHANGE = 'USER_INPUT_CHANGE';
