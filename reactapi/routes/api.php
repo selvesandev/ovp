@@ -7,12 +7,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::group(['prefix' => 'todo'], function () {
+Route::group(['prefix' => 'todo', 'middleware' => 'auth:api'], function () {
 	Route::post('/', 'TodoController@index');
 	Route::post('/detail', 'TodoController@updateDetails');
 	Route::post('/create', 'TodoController@create');
 });
 
 Route::group(['prefix' => 'user'], function () {
-	Route::post('/login', 'UserController@login');
+//	Route::post('/login', 'UserController@login');
 });

@@ -1,5 +1,6 @@
 import * as ActionTypes from './../ActionTypes';
 import {sendPost} from './../../utils/request'
+import {logout} from "./UserAction";
 
 export const todoInputChange = ({prop, value}) => {
 
@@ -13,13 +14,15 @@ export const todoInputChange = ({prop, value}) => {
 export const fetchAllTodoList = () => {
 	return (dispatch) => {
 		dispatch({type: ActionTypes.TODO_LOADER, payload: false});
-		sendPost('/todo').then(res => {
+		sendPost('/todo', {}, {}, true).then(res => {
 			if (res.data.status === true) {
 				dispatch({type: ActionTypes.TODO_FETCH_ALL, payload: res.data.todo})
 			}
 			dispatch({type: ActionTypes.TODO_LOADER, payload: true});
 		}).catch(err => {
-			// console.log(err);
+			if ((err && err.access_error) || err.response === undefined) {
+				dispatch(logout())
+			}
 		})
 		//send request to server.
 	}

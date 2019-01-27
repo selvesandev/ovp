@@ -102,7 +102,7 @@
   h1 {
 	line-height: 0;
   }
-  p{
+  p {
 	font-size: 14px;
   }
 }
@@ -119,6 +119,18 @@
 	outline: none;
   }
 }
-.app-btn{
+
+.app-btn {
   padding: 5px 15px;
+}
+
+.user-nav {
+  position: absolute;
+  right: 50px;
+  img {
+	height: 50px;
+	margin: 0 10px;
+	width: 50px;
+	cursor: pointer;
+  }
 }

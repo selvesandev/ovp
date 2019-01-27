@@ -4,7 +4,8 @@ const initialState = {
 	info: {
 		email: '',
 		password: ''
-	}
+	},
+	error: {}
 };
 
 export default (state = initialState, action) => {
@@ -14,6 +15,11 @@ export default (state = initialState, action) => {
 			return {
 				...state
 			};
+		case ActionTypes.USER_V_ERROR:
+			state.error = action.payload;
+			return {
+				...state
+			}
 	}
 	return state;
 }

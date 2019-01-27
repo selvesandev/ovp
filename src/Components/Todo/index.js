@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {AppInput, TList} from './../../Components/Common';
+import {AppInput, TList, UserNav} from './../../Components/Common';
 import {connect} from "react-redux";
-import {todoInputChange, fetchAllTodoList, submitTodo} from '../../store/actions'
+import {todoInputChange, fetchAllTodoList, submitTodo, logout} from '../../store/actions'
 import Loader from 'react-loader';
+import {Container, AuthHOC} from "../HOC";
 
 class Todo extends Component {
 	state = {
@@ -13,6 +14,7 @@ class Todo extends Component {
 	constructor(props) {
 		super(props);
 		this.removeItem = this.removeItem.bind(this);
+
 	}
 
 
@@ -42,8 +44,8 @@ class Todo extends Component {
 
 	render() {
 		const {todoInputValue, loaded} = this.props.todo;
-
-		return (<div className={'todo-container'}>
+		return (<Container>
+			<UserNav logout={this.props.logout}/>
 			<div className="input-container">
 				<form onSubmit={(e) => {
 					e.preventDefault();
@@ -64,9 +66,7 @@ class Todo extends Component {
 			</div>
 
 			{this.state.todoListItems.length > 3 && <button className={'load-more-button'}>View More.</button>}
-
-
-		</div>);
+		</Container>);
 	}
 }
 
@@ -78,4 +78,4 @@ const mapStateToProps = state => {
 };
 
 
-export default connect(mapStateToProps, {todoInputChange, fetchAllTodoList, submitTodo})(Todo);
+export default connect(mapStateToProps, {todoInputChange, fetchAllTodoList, submitTodo, logout})(AuthHOC(Todo));

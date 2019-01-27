@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppInput} from "../Common/AppInput";
+import {AppInput, VError} from "../Common";
 import {connect} from "react-redux";
 import {userInputChange, loginAction} from './../../store/actions'
 
@@ -10,6 +10,7 @@ class Login extends Component {
 			<h1>Login</h1>
 			<p>Start creating/managing your daily todo lists..</p>
 			<br/>
+			<VError name={'email'} error={this.props.user.error}/>
 			<form action="" onSubmit={(e) => {
 				e.preventDefault();
 				this.props.loginAction();
