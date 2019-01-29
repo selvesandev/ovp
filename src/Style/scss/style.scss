@@ -134,3 +134,30 @@
 	cursor: pointer;
   }
 }
+
+.up-btn {
+  a {
+	text-decoration: none;
+	background-color: #999;
+	color: white;
+	display: inline-block;
+	margin-right: 5px;
+	padding: 10px 20px;
+	margin-bottom: 10px;
+	&.active {
+	  background-color: black;
+	}
+  }
+}
+
+.error {
+  color: red;
+}
+
+.alert-success {
+  background-color:#2ab27b;
+  color:white;
+  font-weight: bold;
+  padding: 10px 15px;
+  margin: 15px 0;
+}

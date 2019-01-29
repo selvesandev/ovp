@@ -6,6 +6,7 @@ import TodoSingle from "./Components/Todo/TodoSingle";
 import {NotFound} from "./Components/Error";
 import Login from "./Components/Auth/Login";
 import history from './utils/history'
+import Profile from "./Components/Profile/index";
 
 class App extends Component {
 	state = {
@@ -34,6 +35,7 @@ class App extends Component {
 						<Route path={'/todo/:id([0-9]*)'} exact
 							   render={() => (<TodoSingle todoItems={this.state.todoItems}/>)}/>
 						<Route path={'/login'} component={Login}/>
+						<Route path={'/profile'} exact component={Profile}/>
 						<Route component={NotFound}/>
 					</Switch>
 				</Router>

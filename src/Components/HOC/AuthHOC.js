@@ -12,7 +12,7 @@ const AuthHOC = (GuardedComponent) => {
 
 		render() {
 			if (this.props.user.isAuthenticated === true)
-				return <GuardedComponent {...this.props}/>;
+				return <GuardedComponent authenticated={this.props.user.info} {...this.props}/>;
 			return null;
 		}
 	}

@@ -11,6 +11,15 @@ export const userInputChange = ({prop, value}) => {
 	}
 };
 
+
+export const userUpdateInputChange = ({prop, value}) => {
+	return {
+		type: ActionTypes.USER_UPDATE_INPUT_CHANGE,
+		payload: {prop, value}
+	}
+};
+
+
 export const loginAction = () => {
 	return (dispatch, getState) => {
 		const payload = {
@@ -29,7 +38,6 @@ export const loginAction = () => {
 				history.push('/');
 			}
 		}).catch(err => {
-			console.log(err);
 			if (err.response) {
 				switch (err.response.status) {
 					case 401:
@@ -69,6 +77,44 @@ export const isAuthenticated = () => {
 		}).catch(err => {
 			if (err && err.response === undefined) {
 				dispatch(logout())
+			}
+		})
+	}
+};
+
+export const updateAction = () => {
+	return (dispatch, getState) => {
+		const {uname, email, id} = getState().user.updateInfo;
+		sendPost('/user/update', {uname, email, id}, {}, true).then(response => {
+			if (response.data.status === true) {
+				dispatch(isAuthenticated());
+			}
+		})
+	}
+};
+
+export const updatePassword = () => {
+	return (dispatch, getState) => {
+		const {password, cpassword, oldpassword, id} = getState().user.updateInfo;
+		sendPost('/user/password', {
+			password,
+			password_confirmation: cpassword,
+			oldpassword,
+			id
+		}, {}, true).then(res => {
+			if (res.data.status === true) {
+				dispatch({type: ActionTypes.USER_PASSWORD_UPDATE_SUCCESS});
+			}
+			dispatch({type: ActionTypes.USER_V_ERROR, payload: {}})
+		}).catch(err => {
+			if (err.response) {
+				switch (err.response.status) {
+					case 422:
+						dispatch({type: ActionTypes.USER_V_ERROR, payload: err.response.data.errors});
+						break;
+					default:
+						return false;
+				}
 			}
 		})
 	}
