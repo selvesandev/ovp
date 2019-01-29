@@ -1,18 +1,30 @@
 import React, {Component} from 'react';
+import {isAuthenticated, logout} from './../../store/actions'
+import {connect} from "react-redux";
 
 
 const AuthHOC = (GuardedComponent) => {
 	class AuthHOC extends Component {
 		constructor(props) {
 			super(props);
+			props.isAuthenticated();
 		}
 
 		render() {
-			return <GuardedComponent {...this.props}/>
+			if (this.props.user.isAuthenticated === true)
+				return <GuardedComponent {...this.props}/>;
+			return null;
 		}
 	}
 
-	return AuthHOC;
+	const mapStateToProps = state => {
+		return {
+			user: state.user
+		}
+	};
+
+
+	return connect(mapStateToProps, {isAuthenticated, logout})(AuthHOC);
 };
 
 export {AuthHOC}

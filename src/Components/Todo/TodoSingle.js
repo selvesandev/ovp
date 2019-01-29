@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {fetchSingleTodoList, todoInputChange, saveDetails} from './../../store/actions';
 import {connect} from "react-redux";
 import {TodoDetails} from "../Common";
+import {AuthHOC} from "../HOC/AuthHOC";
 
 class TodoSingle extends Component {
 
@@ -32,9 +33,13 @@ class TodoSingle extends Component {
 
 const mapStateToProps = state => {
 	return {
-		selected: state.selected,
-		inputValue: state.todoDetailValue
+		selected: state.todo.selected,
+		inputValue: state.todo.todoDetailValue
 	}
 };
 
-export default connect(mapStateToProps, {fetchSingleTodoList, todoInputChange, saveDetails})(withRouter(TodoSingle));
+export default connect(mapStateToProps, {
+	fetchSingleTodoList,
+	todoInputChange,
+	saveDetails
+})(withRouter(AuthHOC(TodoSingle)));

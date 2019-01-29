@@ -5,7 +5,8 @@ const initialState = {
 		email: '',
 		password: ''
 	},
-	error: {}
+	error: {},
+	isAuthenticated: null
 };
 
 export default (state = initialState, action) => {
@@ -19,9 +20,21 @@ export default (state = initialState, action) => {
 			state.error = action.payload;
 			return {
 				...state
+			};
+		case ActionTypes.USER_STATE:
+			state.info.email = action.payload.email;
+			state.info.uname = action.payload.name;
+			state.info.id = action.payload.id;
+			state.isAuthenticated = action.payload.isAuthenticated;
+			if (state.isAuthenticated === false) {
+				state.info.password = '';
 			}
+			return {
+				...state
+			};
+		default:
+			return state;
 	}
-	return state;
 }
 
 

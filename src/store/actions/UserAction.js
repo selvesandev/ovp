@@ -15,7 +15,7 @@ export const loginAction = () => {
 	return (dispatch, getState) => {
 		const payload = {
 			client_id: 2,
-			client_secret: 'SAmWbWW4sxehfrbzkX7690t4qbAf0vwPQp0wDzCe',
+			client_secret: 'jpV523GqIsIWYz2u26bLavaYqdJL84er0AMjWweu',
 			username: getState().user.info.email,
 			password: getState().user.info.password,
 			grant_type: 'password'
@@ -29,10 +29,14 @@ export const loginAction = () => {
 				history.push('/');
 			}
 		}).catch(err => {
+			console.log(err);
 			if (err.response) {
 				switch (err.response.status) {
 					case 401:
-						dispatch({type: ActionTypes.USER_V_ERROR, payload: {email: ['Invalid email or password']}})
+						dispatch({type: ActionTypes.USER_V_ERROR, payload: {email: ['Invalid email or password']}});
+						break;
+					default:
+						return false;
 				}
 			}
 		});
@@ -42,14 +46,30 @@ export const loginAction = () => {
 
 export const logout = () => {
 	return (dispatch) => {
+		dispatch({type: ActionTypes.USER_STATE, payload: {email: '', password: '', isAuthenticated: false}});
 		cookie.remove('_rt_au', {path: '/', expires: 1});
 		history.push('/login')
 	};
-}
+};
 
 
-export const userState = () => {
+export const isAuthenticated = () => {
 	return (dispatch) => {
-		console.log('testing..');
+		sendPost('/user/state', {}, {}, true).then(res => {
+
+			if (res.data.status === true) {
+				dispatch({
+					type: ActionTypes.USER_STATE,
+					payload: {
+						...res.data.user,
+						isAuthenticated: true
+					}
+				});
+			}
+		}).catch(err => {
+			if (err && err.response === undefined) {
+				dispatch(logout())
+			}
+		})
 	}
 }

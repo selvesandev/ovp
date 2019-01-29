@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {AppInput, TList, UserNav} from './../../Components/Common';
 import {connect} from "react-redux";
-import {todoInputChange, fetchAllTodoList, submitTodo, logout} from '../../store/actions'
+import {todoInputChange, fetchAllTodoList, submitTodo, logout, removeTodo} from '../../store/actions'
 import Loader from 'react-loader';
 import {Container, AuthHOC} from "../HOC";
 
@@ -24,13 +24,14 @@ class Todo extends Component {
 		if (todoListItems.length < 1 && loaded === true) return <h3>No todo list created yet...</h3>;
 
 		return todoListItems.map((todoItem, i) => {
-			return <TList onDelete={this.removeItem} key={i} todoItem={todoItem}/>
+			return <TList onDelete={() => {
+				this.props.removeTodo(todoItem.id)
+			}} key={i} todoItem={todoItem}/>
 		})
 	}
 
 
 	removeItem(index) {
-
 		const {todoListItems} = this.state;
 		if (todoListItems[index - 1] === undefined) return false;
 
@@ -62,7 +63,7 @@ class Todo extends Component {
 			<div className="todo-list-container">
 				{this.renderListItemsJSX()}
 
-				<Loader loaded={loaded}></Loader>
+				<Loader loaded={loaded}/>
 			</div>
 
 			{this.state.todoListItems.length > 3 && <button className={'load-more-button'}>View More.</button>}
@@ -73,9 +74,14 @@ class Todo extends Component {
 const mapStateToProps = state => {
 	return {
 		todo: state.todo
-
 	}
 };
 
 
-export default connect(mapStateToProps, {todoInputChange, fetchAllTodoList, submitTodo, logout})(AuthHOC(Todo));
+export default connect(mapStateToProps, {
+	todoInputChange,
+	fetchAllTodoList,
+	submitTodo,
+	logout,
+	removeTodo
+})(AuthHOC(Todo));

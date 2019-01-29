@@ -8,7 +8,7 @@ const TList = ({todoItem, onDelete}) => {
 	const {id, todo} = todoItem;
 	return (<div className="list-item">
 		<Link to={'/todo/' + id}>{todo}</Link>
-		<div className="remove"><a href="" onClick={(e) => {
+		<div className="remove"><a href="/" onClick={(e) => {
 			e.preventDefault();
 			confirmAlert({
 				title: 'Are you sure?',
@@ -21,7 +21,7 @@ const TList = ({todoItem, onDelete}) => {
 				]
 			})
 		}}><i className={'fas fa-trash-alt'}/></a></div>
-		<div className="view"><a href=""><i className={'fas fa-eye'}/></a></div>
+		<div className="view"><a href="/"><i className={'fas fa-eye'}/></a></div>
 	</div>);
 };
 

@@ -56,4 +56,12 @@ class TodoController extends Controller
 		$todo->save();
 		return response()->json(['status' => true]);
 	}
+
+	public function remove(Request $request)
+	{
+		$id = (int)$request->id;
+		Todo::where(['id' => $id])->delete();
+		return response()->json(['status' => true]);
+	}
 }
+

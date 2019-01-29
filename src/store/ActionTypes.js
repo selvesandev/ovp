@@ -6,3 +6,4 @@ export const TODO_LOADER = 'TODO_LOADER';
 
 export const USER_INPUT_CHANGE = 'USER_INPUT_CHANGE';
 export const USER_V_ERROR = 'USER_V_ERROR';
+export const USER_STATE = 'USER_STATE';
